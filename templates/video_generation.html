@@ -3,21 +3,28 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>视频生成界面</title>
+    <title>视频生成</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body class="subpage-bg">
-    <h2>视频生成界面</h2>
-    <div class="video-page-container">
-        <!-- 左边视频显示 -->
-        <div class="video-display">
-            <video id="outputVideo" controls width="420">
-                <source src="{{ url_for('static', filename='videos/sample.mp4') }}" type="video/mp4">
-            </video>
-        </div>
 
-        <!-- 右边输入表单 -->
+    <button onclick="window.location.href='/'" aria-label="返回首页" title="返回首页" class="back-btn">
+        ← 返回
+    </button>
+
+    <div class="page-container">
+        <h2>视频生成</h2>
+
+        <div class="video-page-container">
+            <!-- 左侧：预览/生成视频区域 -->
+            <div class="video-display">
+                <video id="previewVideo" controls width="420">
+                    <source src="{{ url_for('static', filename='videos/sample.mp4') }}" type="video/mp4">
+                </video>
+            </div>
+
+            <!-- 右边输入表单 -->
         <div class="form-section">
             <form id="videoForm">
                 <div class="form-group">
@@ -55,35 +62,10 @@
                 <button type="submit" class="generate-btn">生成视频</button>
             </form>
         </div>
+        </div>
     </div>
 
-    <script>
-        document.getElementById('videoForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            const formData = new FormData(this);
-
-            fetch('/video_generation', {
-                method: 'POST',
-                body: formData
-            })
-                .then(res => res.json())
-                .then(data => {
-                    console.log("后端返回:", data);
-                    if (data.status === 'success') {
-                        const videoEl = document.getElementById('outputVideo');
-                        const newSrc = data.video_path + '?t=' + new Date().getTime();
-                        videoEl.src = newSrc;
-                        videoEl.load();
-                        videoEl.play().catch(err => console.warn('自动播放被阻止:', err));
-                    } else {
-                        alert('视频生成失败！');
-                    }
-                })
-                .catch(err => console.error('错误:', err));
-        });
-
-    </script>
+    <script src="{{ url_for('static', filename='js/video_generation.js') }}"></script>
 
 </body>
 

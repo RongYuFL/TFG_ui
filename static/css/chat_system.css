@@ -1,0 +1,207 @@
+/* 将样式限定在 .page-container 范围，避免覆盖全局 body / layout */
+
+/* 主布局（在 page-container 内） */
+.page-container .video-page-container {
+    display: flex;
+    max-width: 1100px;
+    margin: 0 auto;
+    gap: 24px;
+
+    /* 改为完全透明背景 */
+    background: transparent;
+
+    border-radius: 0;
+    box-shadow: none;
+    overflow: visible;
+    align-items: flex-start;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 左侧视频区域 */
+.page-container .video-display {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.page-container .video-display video {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    margin-bottom: 20px;
+    max-width: 100%;
+    height: auto;
+}
+
+/* 右侧表单区域（固定占比 35%） */
+.page-container .form-section {
+    flex: 0 0 35%;
+    max-width: 35%;
+    padding: 20px;
+    background: rgba(249,249,249,0.98);
+    border-left: 1px solid #eee;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+/* 表单项 */
+.page-container .form-group {
+    margin-bottom: 18px;
+}
+
+.page-container label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+}
+
+.page-container select,
+.page-container input,
+.page-container textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.page-container textarea {
+    height: 80px;
+    resize: none;
+}
+
+/* 提交/生成按钮 */
+.page-container .generate-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.page-container .generate-btn:hover {
+    background-color: #2980b9;
+}
+
+/* 语音录制器相关，保持在容器内 */
+.page-container .voice-recorder {
+    margin-top: 20px;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.page-container .recorder-title {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #2c3e50;
+}
+
+.page-container .record-btn {
+    padding: 12px 24px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 0 auto 15px;
+}
+
+.page-container .record-btn:hover {
+    background-color: #c0392b;
+    transform: scale(1.05);
+}
+
+.page-container .record-btn.recording {
+    background-color: #2ecc71;
+    animation: pulse 1.5s infinite;
+}
+
+.page-container .record-btn.recording:hover {
+    background-color: #27ae60;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(46,204,113,0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(46,204,113,0); }
+    100% { box-shadow: 0 0 0 0 rgba(46,204,113,0); }
+}
+
+.page-container .timer {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin: 15px 0;
+}
+
+.page-container .recording-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.page-container .recording-dot {
+    width: 12px;
+    height: 12px;
+    background-color: #e74c3c;
+    border-radius: 50%;
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+    0%,50% { opacity: 1; }
+    51%,100% { opacity: 0; }
+}
+
+.page-container .status-message {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #7f8c8d;
+}
+
+/* 响应式：窄屏时改为纵向排列 */
+@media (max-width: 768px) {
+    .page-container .video-page-container {
+        flex-direction: column;
+        gap: 16px;
+    }
+    .page-container .form-section {
+        flex: 1 1 100%;
+        max-width: 100%;
+        border-left: none;
+        border-top: 1px solid #eee;
+    }
+    .page-container .video-display {
+        flex: 1 1 100%;
+        max-width: 100%;
+        padding: 12px;
+    }
+}
+
+/* 扩充 page-container 高度到视口的 70% 并垂直居中内部内容 */
+.page-container{
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* 垂直居中 .video-page-container 等子元素 */
+    box-sizing: border-box;
+}
