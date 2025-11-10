@@ -44,12 +44,19 @@ async function startRecording() {
                 method: 'POST',
                 body: formData
             })
-            .then(response => response.json())
-            .then(data => {
+            .then(async response => {
+                const text = await response.text();
+                let data;
+                try {
+                    data = JSON.parse(text);
+                } catch (e) {
+                    data = { status: 'error', message: '无法解析返回值', raw: text };
+                }
+                console.log('save_audio response:', data);
                 if (data.status === 'success') {
-                    statusMessage.textContent = '录音已结束';
+                    statusMessage.textContent = '录音已结束，保存路径: ' + (data.file_path || data.message || '');
                 } else {
-                    statusMessage.textContent = '保存录音失败';
+                    statusMessage.textContent = '保存录音失败: ' + (data.message || JSON.stringify(data));
                 }
             })
             .catch(error => {

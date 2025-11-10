@@ -32,7 +32,8 @@
                 </div>
                 <!-- 左侧视频显示 -->
                 <video id="chatVideo" controls width="420">
-                    <source src="{{ url_for('static', filename='videos/sample.mp4') }}" type="video/mp4">
+                    <!--<source src="{{ url_for('static', filename='videos/sample.mp4') }}" type="video/mp4">-->
+                    <source src="{{ url_for('static', filename='audios/cloned_output.wav') }}" type="audio/wav">
                 </video>
             </div>
 
@@ -79,3 +80,8 @@
 </body>
 
 </html>
+
+<!--
+Example audio file URL:
+http://127.0.0.1:5000/static/audios/input.wav
+-->

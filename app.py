@@ -3,6 +3,8 @@ import os
 from backend.video_generator import generate_video
 from backend.model_trainer import train_model
 from backend.chat_engine import chat_response
+from werkzeug.utils import secure_filename
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -71,19 +73,31 @@ def chat_system():
 def save_audio():
     if 'audio' not in request.files:
         return jsonify({'status': 'error', 'message': '没有音频文件'})
-    
+
     audio_file = request.files['audio']
     if audio_file.filename == '':
         return jsonify({'status': 'error', 'message': '没有选择文件'})
-    
-    # 确保目录存在
-    os.makedirs('./static/audios', exist_ok=True)
-    
-    # 保存文件
-    audio_file.save('./static/audios/input.wav')
-    
-    return jsonify({'status': 'success', 'message': '音频保存成功'})
+
+    # 使用项目绝对路径，确保在 Docker 中路径正确
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    save_dir = os.path.join(base_dir, 'static', 'audios')
+    os.makedirs(save_dir, exist_ok=True)
+
+    # 安全文件名 + 时间戳，避免覆盖
+    filename = secure_filename(audio_file.filename) or 'input.wav'
+    name, ext = os.path.splitext(filename)
+    if not ext:
+        ext = '.wav'
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    final_name = f"{name}_{timestamp}{ext}"
+    save_path = os.path.join(save_dir, final_name)
+
+    audio_file.save(save_path)
+
+    # 返回前端可访问的相对 URL
+    web_path = '/static/audios/' + final_name
+    return jsonify({'status': 'success', 'message': '音频保存成功', 'file_path': web_path})
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port = 5001)
+    app.run(host='0.0.0.0', debug=True, port=5000)
