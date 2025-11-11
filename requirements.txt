@@ -1,4 +1,88 @@
---index-url https://pypi.tuna.tsinghua.edu.cn/simple
-Flask==3.0.3
-SpeechRecognition
-zhipuai
+-----------------------------------------------------------------
+
+Python Version: 3.9.24
+
+This file is generated from a 'pip list' for the (RVC_cuda)
+
+environment. It includes hardware-specific packages.
+
+-----------------------------------------------------------------
+
+Index Servers
+
+Using Tsinghua mirror for faster downloads
+
+--index-url [suspicious link removed]
+
+-----------------------------------------------------------------
+
+!! 关键的硬件特定包 !!
+
+!! CRITICAL HARDWARE-SPECIFIC PACKAGES !!
+
+下面的 torch 包是为 CUDA 12.6 编译的。
+
+The following torch packages are built for CUDA 12.6.
+
+如果你的新环境没有 NVIDIA GPU 或 CUDA 版本不同，
+
+你必须在安装前手动从此文件中删除这三行，
+
+然后从 pytorch.org 官网安装适合你硬件的 PyTorch 版本。
+
+-----------------------------------------------------------------
+
+torch==2.8.0+cu126
+torchaudio==2.8.0+cu126
+torchvision==0.23.0+cu126
+
+-----------------------------------------------------------------
+
+核心项目依赖 (Core Project Dependencies)
+
+-----------------------------------------------------------------
+
+Web UI & API
+
+gradio==4.44.1
+Flask==3.1.2
+fastapi==0.120.3
+uvicorn==0.38.0
+
+AI/ML & Models
+
+transformers==4.46.3
+diffusers==0.29.0
+safetensors==0.5.3
+onnx==1.19.1
+huggingface-hub==0.36.0
+
+Audio & Data
+
+librosa==0.11.0
+SpeechRecognition==3.14.3
+pydub==0.25.1
+soundfile==0.13.1
+numpy==2.0.2
+scipy==1.13.1
+scikit-learn==1.6.1
+pandas==2.3.3
+Pillow==10.4.0
+
+Utilities
+
+PyYAML==6.0.3
+tqdm==4.67.1
+requests==2.32.5
+
+Project-Specific (from your original file & list)
+
+zhipuai==2.1.5.20250825
+chatterbox-tts==0.1.3
+
+Language/Text Processing
+
+jieba==0.42.1
+pykakasi==2.3.0
+jaconv==0.4.0
+pkuseg==0.0.25
