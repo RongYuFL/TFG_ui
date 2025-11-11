@@ -114,7 +114,7 @@ cd genefaceplusplus_ui
 |       |-- cloned_output.wav  (服务器开启后RVC.py的输出音频)
 |-- templates/
 |-- SyncTalk/
-|   |-- audio/              (网页录音保存目录，服务器开启后china_pipeline.py的输入音频路径)
+|   |-- audio/              (网页录音保存目录，服务器开启后输入音频的保存路径)
 |-- latest_ai_response.txt  (AI应答文字，服务器开启后的输入文字)
 |-- conversation_log.txt    (AI对话历史)
 ```
