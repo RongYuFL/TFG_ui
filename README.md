@@ -71,7 +71,7 @@ graph TD
 [前端 JS 接收到路径 → 替换 <video> 标签的 src → 自动播放视频]
 ```
 
-## 环境配置与安装 ==**(建议直接拷贝整个环境，找dcy)**==
+## 环境配置与安装 ==(建议直接拷贝整个环境，找dcy)==
 
 ### 步骤 1: 克隆项目
 
@@ -95,7 +95,8 @@ cd genefaceplusplus_ui
 /genefaceplusplus_ui/
 |-- app.py
 |-- china_pipeline.py
-|-- RVC.py
+|-- RVC.py                  (语音克隆主程序)
+|-- test_rvc_offline.py     (RVC.py离线测试脚本)
 |-- requirements.txt
 |-- README.md
 |-- backend/
@@ -103,19 +104,18 @@ cd genefaceplusplus_ui
 |   |-- audio/              (参考音色文件目录)
 |       |-- nahida.wav
 |       |-- zhb.wav
-|   |-- text/               (RVC.py测试时的输入文字)
-|       |-- nahida.txt
-|       |-- text.txt
+|   |-- text/               (测试时的输入文字)
+|       |-- test.txt
 |-- models_zh/          <-- (需手动复制, 5个G左右)
 |-- output/             
-|   |-- cloned_nahida.wav   (RVC.py测试时的输出音频)
+|   |-- offline_test_output.wav   (测试时的输出音频)
 |-- static/
 |   |-- audio/              
 |       |-- cloned_output.wav  (服务器开启后RVC.py的输出音频)
 |-- templates/
 |-- SyncTalk/
 |   |-- audio/              (网页录音保存目录，服务器开启后china_pipeline.py的输入音频路径)
-|-- latest_ai_response.txt  (AI应答文字，服务器开启后RVC.py的输入文字)
+|-- latest_ai_response.txt  (AI应答文字，服务器开启后的输入文字)
 |-- conversation_log.txt    (AI对话历史)
 ```
 
@@ -160,10 +160,10 @@ pip install -r requirements.txt
 
 ### 步骤 5: 【关键】测试 `RVC.py` 脚本
 
-单独运行 `RVC.py` 文件，测试其能否在该环境下正确运行。
+在本地单独运行 `test_rvc_offline.py` 文件，测试其能否在该环境下正确运行。
 ```
 # 输入音频、文字和输出音频路径已在脚本中指定
-python RVC.py
+python test_rvc_offline.py
 ```
 
 
