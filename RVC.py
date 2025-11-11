@@ -132,7 +132,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run RVC clone-and-synthesize")
     parser.add_argument("--ref", "-r", default="./input/audio/nahida.wav", help="Reference wav path")
     parser.add_argument("--out", "-o", default="./output/cloned_nahida.wav", help="Output wav path")
-    parser.add_argument("--text-file", "-t", default="./input/text/nahida.txt", help="Path to txt file containing the target text (UTF-8). If omitted, a built-in text is used.")
+    parser.add_argument("--text-file", "-t", default="./input/text/test.txt", help="Path to txt file containing the target text (UTF-8). If omitted, a built-in text is used.")
     args = parser.parse_args()
 
     ref = args.ref
