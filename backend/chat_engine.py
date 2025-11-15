@@ -9,17 +9,17 @@ from pydub import AudioSegment
 PYTHON_EXECUTABLE = sys.executable 
 print(f"[chat_engine.py] Using Python interpreter: {PYTHON_EXECUTABLE}")
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-CHINA_PIPELINE_SCRIPT = os.path.join(BASE_DIR, "china_pipeline.py")
-RVC_SCRIPT = os.path.join(BASE_DIR, "RVC.py")
+CHINA_PIPELINE_SCRIPT = os.path.join(BASE_DIR, "RVC", "china_pipeline.py")
+RVC_SCRIPT = os.path.join(BASE_DIR, "RVC", "RVC.py")
 INPUT_AUDIO_PATH = os.path.join(BASE_DIR, "SyncTalk", "audio", "aud.wav")
-INTERMEDIATE_TEXT_FILE = os.path.join(BASE_DIR, "latest_ai_response.txt")
-RVC_REF_AUDIO = os.path.join(BASE_DIR, "input", "audio", "nahida.wav")
+INTERMEDIATE_TEXT_FILE = os.path.join(BASE_DIR, "RVC", "latest_ai_response.txt")
+RVC_REF_AUDIO = os.path.join(BASE_DIR, "RVC", "input", "audio", "nahida.wav")
 FINAL_AUDIO_NAME = "cloned_output.wav"
 FINAL_AUDIO_PATH_SERVER = os.path.join(BASE_DIR, "static", "audios", FINAL_AUDIO_NAME)
 FINAL_AUDIO_PATH_WEB = f"/static/audios/{FINAL_AUDIO_NAME}"
 
 # 【新】临时文件
-TEMP_TEXT_FILE = os.path.join(BASE_DIR, "temp_rvc_text.txt") # 用于RVC的临时文本
+TEMP_TEXT_FILE = os.path.join(BASE_DIR, "RVC", "temp_rvc_text.txt") # 用于RVC的临时文本
 
 
 def simple_splitter(text, max_len=50):

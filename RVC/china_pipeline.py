@@ -7,6 +7,8 @@ from pydub import AudioSegment
 # --- 文件名常量 ---
 LATEST_RESPONSE_FILE = "latest_ai_response.txt"
 LOG_FILE = "conversation_log.txt"
+LATEST_RESPONSE_FILE_PATH = os.path.join(os.path.dirname(__file__), LATEST_RESPONSE_FILE)
+LOG_FILE_PATH = os.path.join(os.path.dirname(__file__), LOG_FILE)
 
 # 1. 设置API Key
 api_key = "c4f0ad328f1248b2a0840c78c7b54ab4.6VT7eLDZ9T7ZagY7"
@@ -97,9 +99,9 @@ def save_response_to_file(user_text, assistant_reply):
     
     # 1. 保存最新的回答 (用于TTS) - 覆盖模式 (w)
     try:
-        with open(LATEST_RESPONSE_FILE, 'w', encoding='utf-8') as f:
+        with open(LATEST_RESPONSE_FILE_PATH, 'w', encoding='utf-8') as f:
             f.write(assistant_reply)
-        print(f"[Save] 最新回答已保存到: {LATEST_RESPONSE_FILE}")
+        print(f"[Save] 最新回答已保存到: {LATEST_RESPONSE_FILE_PATH}")
     except Exception as e:
         print(f"[Save] 保存最新回答失败: {e}")
 
@@ -108,11 +110,11 @@ def save_response_to_file(user_text, assistant_reply):
         # 确保 user_text 不是 None
         user_text_to_save = user_text if user_text else "N/A (ASR失败)"
         
-        with open(LOG_FILE, 'a', encoding='utf-8') as f:
+        with open(LOG_FILE_PATH, 'a', encoding='utf-8') as f:
             f.write(f"【{time.ctime()}】\n")
             f.write(f"你: {user_text_to_save}\n")
             f.write(f"AI: {assistant_reply}\n\n")
-        print(f"[Save] 对话日志已追加到: {LOG_FILE}")
+        print(f"[Save] 对话日志已追加到: {LOG_FILE_PATH}")
     except Exception as e:
         print(f"[Save] 追加日志失败: {e}")
 # --- 【【【 新增功能结束 】】】 ---
@@ -141,7 +143,6 @@ def get_llm_response_zhipu(user_text):
         conversation_history.append({"role": "assistant", "content": assistant_reply})
         print(f"[LLM] AI 回答: {assistant_reply}")
 
-        # --- 【【【 新增调用 】】】 ---
         # 在获取到回答后，立即保存
         save_response_to_file(user_text, assistant_reply)
         
@@ -178,7 +179,6 @@ if __name__ == "__main__":
         ai_response_text = get_llm_response_zhipu(user_input_text)
         llm_time = time.time()
         
-        # （你上一个脚本中的 generate_audio_zhipu (TTS) 已被RVC.py替代，所以这里不需要调用）
 
         # 5. 打印结果
         print("\n--- 任务完成 ---")

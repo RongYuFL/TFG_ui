@@ -17,7 +17,7 @@ def _local_hf_hub_download(repo_id, filename, cache_dir=None, *args, **kwargs):
     except Exception:
         pass
     # common local places we might have model files
-    search_paths += [Path("./models_zh"), Path("./models"), Path.cwd()]
+    search_paths += [Path("./RVC/models_zh"), Path("./RVC/models"), Path.cwd()]
 
     for base in search_paths:
         try:
@@ -77,7 +77,7 @@ print(f"Using device: {DEVICE}")
 def clone_and_synthesize(ref_wav_path: str, text: str, out_path: str):
     # 使用多语种模型以支持 language_id 参数（例如中文 'zh'）
     # 确保本地模型权重已下载到 ./models（或替换为你的目录）
-    model = ChatterboxMultilingualTTS.from_local("./models_zh", device=DEVICE)
+    model = ChatterboxMultilingualTTS.from_local("./RVC/models_zh", device=DEVICE)
     # 调用 generate（会内部处理 reference wav）
     try:
         print(f"[DEBUG] Calling model.generate() at {time.strftime('%X')}")
@@ -130,9 +130,9 @@ if __name__ == "__main__":
     from pathlib import Path
 
     parser = argparse.ArgumentParser(description="Run RVC clone-and-synthesize")
-    parser.add_argument("--ref", "-r", default="./input/audio/nahida.wav", help="Reference wav path")
-    parser.add_argument("--out", "-o", default="./output/cloned_nahida.wav", help="Output wav path")
-    parser.add_argument("--text-file", "-t", default="./input/text/test.txt", help="Path to txt file containing the target text (UTF-8). If omitted, a built-in text is used.")
+    parser.add_argument("--ref", "-r", default="./RVC/input/audio/nahida.wav", help="Reference wav path")
+    parser.add_argument("--out", "-o", default="./RVC/output/cloned_nahida.wav", help="Output wav path")
+    parser.add_argument("--text-file", "-t", default="./RVC/input/text/nahida.txt", help="Path to txt file containing the target text (UTF-8). If omitted, a built-in text is used.")
     args = parser.parse_args()
 
     ref = args.ref
