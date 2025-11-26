@@ -2,98 +2,64 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>DATA HAMMER GROUP TALKING SYSTEM</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <style>
-        body.main-bg {
-            background: radial-gradient(circle at center, #0a0a0a 0%, #1b1b1b 100%);
-            color: #fff;
-            font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-        }
-
-        .container {
-            text-align: center;
-            padding: 40px 60px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            box-shadow: 0 0 40px rgba(0, 200, 255, 0.2);
-            backdrop-filter: blur(10px);
-            animation: fadeIn 1.2s ease;
-        }
-
-        h1 {
-            font-size: 2.2rem;
-            letter-spacing: 2px;
-            color: #00e5ff;
-            margin-bottom: 40px;
-            text-shadow: 0 0 15px rgba(0, 229, 255, 0.6);
-            animation: glowText 3s infinite alternate;
-        }
-
-        .button-container {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .button-container button {
-            background: linear-gradient(90deg, #00c6ff, #0072ff);
-            border: none;
-            color: white;
-            font-size: 1.1rem;
-            font-weight: bold;
-            padding: 14px 0;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
-        }
-
-        .button-container button:hover {
-            transform: scale(1.05);
-            background: linear-gradient(90deg, #0072ff, #00c6ff);
-            box-shadow: 0 0 25px rgba(0, 229, 255, 0.6);
-        }
-
-        .button-container button:active {
-            transform: scale(0.98);
-        }
-
-        @keyframes glowText {
-            from { text-shadow: 0 0 10px #00e5ff; }
-            to { text-shadow: 0 0 25px #00ffff, 0 0 50px #00ffff; }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* 可选底部标识 */
-        .footer {
-            position: absolute;
-            bottom: 15px;
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.4);
-        }
-    </style>
+    <title>GENEFACEPLUSPLUS TALKING SYSTEM</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 </head>
 <body class="main-bg">
+    <!-- 新增：右上角“使用教程”按钮 -->
+    <button class="help-button" id="openHelpBtn" aria-haspopup="dialog" aria-controls="helpModal">使用教程</button>
+
     <div class="container">
-        <h1>DATA HAMMER GROUP<br>TALKING SYSTEM</h1>
+        <h1>GENEFACEPLUSPLUS<br>TALKING SYSTEM</h1>
         <div class="button-container">
             <button onclick="window.location.href='/model_training'">训练模型</button>
             <button onclick="window.location.href='/video_generation'">视频生成</button>
             <button onclick="window.location.href='/chat_system'">人机对话</button>
         </div>
     </div>
-    <div class="footer">© 2025 DATA HAMMER LAB</div>
+
+    <!-- 添加浮动叶子元素（5 个示例） -->
+    <div class="floating-elements" aria-hidden="true">
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+    </div>
+
+    <div class="footer">© 2025 昊斌哥哥粉丝团LAB</div>
+
+    <!-- 新增：弹窗结构（初始隐藏），内容请参照项目根目录 README.md 替换下面的 placeholder -->
+    <div class="modal-backdrop" id="helpModal" role="dialog" aria-modal="true" aria-labelledby="helpTitle" tabindex="-1">
+        <div class="modal-content" role="document">
+            <div class="modal-header">
+                <h2 class="modal-title" id="helpTitle">使用教程</h2>
+                <button class="modal-close" id="closeHelpBtn" aria-label="关闭">✕</button>
+            </div>
+            <!-- 从外部文本文件加载内容，删除内联文字 -->
+            <pre id="helpBody" class="modal-body" tabindex="0" data-src="{{ url_for('static', filename='text/index.txt') }}"></pre>
+            
+            <!-- 新增：底部操作栏，仅含“播放教程视频”按钮 -->
+            <div class="modal-actions" aria-hidden="false">
+                <!-- 添加 data-video 属性，JS 从该属性读取 URL 并在新标签页打开 -->
+                <button class="btn primary" id="playTutorialBtn" type="button"
+                        data-video="{{ url_for('static', filename='videos/tutorial.mp4') }}">
+                    播放教程视频
+                </button>
+            </div>
+
+            <!-- 新增：内嵌视频容器（初始隐藏），静态文件位于 static/videos/tutorial.mp4（根据实际位置调整） -->
+            <div class="modal-video" id="modalVideo" aria-hidden="true" hidden>
+                <video id="tutorialVideo" controls preload="metadata" playsinline>
+                    <source src="{{ url_for('static', filename='videos/tutorial.mp4') }}" type="video/mp4">
+                    您的浏览器不支持视频播放。
+                </video>
+                <button class="modal-video-close" id="closeVideoBtn" aria-label="关闭视频">关闭视频</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入外部脚本 -->
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 </body>
 </html>

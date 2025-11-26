@@ -5,88 +5,93 @@
     <meta charset="UTF-8">
     <title>模型训练界面</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- 新增：复用 video_help.css 为本页提供 使用教程 样式 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/elaboration.css') }}">
 </head>
 
 <body class="subpage-bg">
-    <h2>模型训练界面</h2>
-    <div class="video-page-container">
-        <!-- 左侧：训练结果视频 -->
-        <div class="video-display">
-            <video id="trainVideo" controls width="420">
-                <source src="{{ url_for('static', filename='videos/sample.mp4') }}" type="video/mp4">
-            </video>
-        </div>
+    
+    <button onclick="window.location.href='/'" aria-label="返回首页" title="返回首页" class="back-btn">
+        ← 返回
+    </button>
 
-        <!-- 右侧：输入框 -->
-        <div class="form-section">
-            <form id="trainForm">
-                <div class="form-group">
-                    <label>模型选择</label>
-                    <select name="model_choice">
-                        <option value="modelA">Model A</option>
-                        <option value="modelB">Model B</option>
-                        <option value="SyncTalk">SyncTalk</option>
-                    </select>
-                </div>
+    <!-- 右上角：使用教程（复用 video_help.css / video_generation_help.js） -->
+    <button class="vg-help-button" id="vg_openHelpBtn" aria-haspopup="dialog" aria-controls="vg_helpModal">参数说明</button>
 
-                <div class="form-group">
-                    <label>参考视频/图像地址</label>
-                    <input type="text" name="ref_video" placeholder="请输入参考视频或图像的相对路径">
-                </div>
+    <div class="page-container">
+        <h2>模型训练界面</h2>
+        <div class="video-page-container">
+            <!-- 左侧：训练结果视频 -->
+            <div class="video-display">
+                <video id="trainVideo" controls width="420">
+                    <source src="{{ url_for('static', filename='videos/sample.mp4') }}" type="video/mp4">
+                </video>
+            </div>
 
-                <div class="form-group">
-                    <label>GPU选择</label>
-                    <select name="gpu_choice">
-                        <option value="GPU0">GPU 0</option>
-                        <option value="GPU1">GPU 1</option>
-                    </select>
-                </div>
+            <!-- 右侧：输入框 -->
+            <div class="form-section">
+                <form id="trainForm">
+                    <div class="form-group">
+                        <label>模型选择</label>
+                        <select name="model_choice">
+                            <option value="modelA">Model A</option>
+                            <option value="modelB">Model B</option>
+                            <option value="SyncTalk">SyncTalk</option>
+                        </select>
+                    </div>
 
-                <div class="form-group">
-                    <label>Epoch（训练轮数）</label>
-                    <input type="number" name="epoch" min="1" value="10">
-                </div>
+                    <div class="form-group">
+                        <label>参考视频/图像地址</label>
+                        <input type="text" name="ref_video" placeholder="请输入参考视频或图像的相对路径">
+                    </div>
 
-                <div class="form-group">
-                    <label>自定义训练参数</label>
-                    <textarea name="custom_params" placeholder="请输入自定义参数..."></textarea>
-                </div>
+                    <div class="form-group">
+                        <label>GPU选择</label>
+                        <select name="gpu_choice">
+                            <option value="GPU0">GPU 0</option>
+                            <option value="GPU1">GPU 1</option>
+                        </select>
+                    </div>
 
-                <button type="submit" class="generate-btn">Training!</button>
-            </form>
+                    <div class="form-group">
+                        <label>Epoch（训练轮数）</label>
+                        <input type="number" name="epoch" min="1" value="10">
+                    </div>
+
+                    <div class="form-group">
+                        <label>自定义训练参数</label>
+                        <textarea name="custom_params" placeholder="请输入自定义参数..."></textarea>
+                    </div>
+
+                    <button type="submit" class="generate-btn">Training!</button>
+                </form>
+            </div>
         </div>
     </div>
 
-    <script>
-        document.getElementById('trainForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const formData = new FormData(this);
+    <!-- 共用 modal（与 video_generation/chat_system 页面一致，内容从 static/text/index.txt 加载） -->
+    <div class="vg-modal-backdrop" id="vg_helpModal" role="dialog" aria-modal="true" aria-labelledby="vg_helpTitle" tabindex="-1" hidden>
+        <div class="vg-modal-content" role="document">
+            <div class="vg-modal-header">
+                <h2 class="vg-modal-title" id="vg_helpTitle">参数说明</h2>
+                <button class="vg-modal-close" id="vg_closeHelpBtn" aria-label="关闭">✕</button>
+            </div>
 
-            // 立即从表单获取视频路径并播放
-            const refVideoPath = formData.get('ref_video');
-            const videoEl = document.getElementById('trainVideo');
+            <pre id="vg_helpBody" class="vg-modal-body" tabindex="0" data-src="{{ url_for('static', filename='text/model_training.txt') }}"></pre>
 
-            if (refVideoPath) {
-                // 立即设置视频源并播放
-                const newSrc = "/" + refVideoPath.replace("\\", "/") + '?t=' + new Date().getTime();
-                videoEl.src = newSrc;
-                videoEl.load();
-                videoEl.play().catch(e => console.log('自动播放可能被阻止:', e));
-            }
+            <div class="vg-modal-actions" aria-hidden="false">
+                <button class="vg-btn vg-btn-primary" id="vg_playTutorialBtn" type="button"
+                        data-video="{{ url_for('static', filename='videos/tutorial.mp4') }}">
+                    播放教程视频
+                </button>
+            </div>
+        </div>
+    </div>
 
-            fetch('/model_training', {
-                method: 'POST',
-                body: formData
-            })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        alert('训练完成！');
-                    }
-                })
-                .catch(err => console.error('错误:', err));
-        });
-    </script>
+    <script src="{{ url_for('static', filename='js/model_training.js') }}"></script>
+    <!-- 共用帮助脚本（页面专用，不引用 index.js） -->
+    <script src="{{ url_for('static', filename='js/elaboration.js') }}"></script>
 </body>
 
 </html>
+

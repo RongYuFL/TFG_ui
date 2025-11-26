@@ -1,3 +1,9 @@
+@font-face {
+    font-family: 'CustomUI';
+    src: url('/static/fonts/正文字体.ttf') format('truetype');
+    font-display: swap;
+}
+
 /* ========== 视频生成界面布局 ========== */
 .video-page-container {
     display: flex;
@@ -10,7 +16,9 @@
 
 /* 左边视频 */
 .video-display {
-    flex: 1;
+    /* 固定为占据外层容器的 50% 宽度，使右侧 .form-section 的左边界对齐屏幕（容器）正中 */
+    flex: 0 0 50%;
+    max-width: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -23,12 +31,20 @@
 
 /* 右边表单 */
 .form-section {
-    flex: 1;
-    background-color: #f9d9c7;
+    /* 固定为占据外层容器的 35% 宽度 */
+    flex: 0 0 35%;
+    max-width: 35%;
+
+    background-color: #6A0DAD;
     padding: 25px 30px;
     border-radius: 16px;
     box-shadow: 0 0 8px rgba(0,0,0,0.15);
     text-align: left;
+    box-sizing: border-box;
+
+    /* 向左移动 5%（相对于自身位置）*/
+    position: relative;
+    left: -5%;
 }
 
 .form-section form {
@@ -45,6 +61,7 @@
 label {
     font-weight: bold;
     margin-bottom: 5px;
+    color: #FFD700; /* 改为黄色 */
 }
 
 input, select, textarea {
@@ -64,7 +81,7 @@ textarea {
 .generate-btn {
     background-color: #f1834b;
     color: white;
-    font-size: 16px;
+    font-size: 18px; /* 从 16px 扩大到 18px */
     border: none;
     border-radius: 10px;
     padding: 12px 20px;
@@ -77,11 +94,179 @@ textarea {
 }
 
 /* 页面标题通用样式 */
+h2{
+    margin: 0 0 32px;
+    font-size: clamp(3rem, 5vw, 4rem); /* 放大标题字号 */
+    letter-spacing: 2px;
+    color: var(--accent-a);
+    text-shadow: 0 0 18px rgba(0,229,255,0.6);
+    animation: glowText 3s infinite alternate;
+    text-align: center; /* 新增：居中标题文本 */
+}
+
+/* 新增：页面外层容器，使用 images/border.png 作为背景（覆盖并居中） */
+.page-container{
+    width: min(1600px, 80%);
+    margin: 0 auto;         /* 改为 0 auto，配合 body 的 flex 居中 */
+    padding: 36px;                       /* 内边距，保证内部元素不贴边 */
+
+    /* 黑色半透明背景保留 */
+    background-color: rgba(0,0,0,0.65);
+
+    /* 将图片改为伪元素显示，避免覆盖文字层 */
+    /* background-image: url('/static/images/border.png'); 
+       background-repeat: no-repeat; background-position: center; background-size: 100% 100%; */
+
+    border-radius: 14px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.45);
+    box-sizing: border-box;
+    position: relative;
+    z-index: 2;
+
+    /* 保持内容可读性 */
+    color: #fff;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* 用伪元素承载背景图，置于容器下层，且不拦截鼠标 */
+.page-container::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url('/static/images/border.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 100%;
+    opacity: 1;
+    pointer-events: none;
+    z-index: 1; /* 低于容器内容，但高于 body 背景 */
+}
+
+/* 确保标题位于伪元素之上（不被背景遮挡）*/
+.page-container h2,
+.page-container h1 {
+    position: relative;
+    z-index: 3;
+}
+
+/* 确保页面内部主布局在 .page-container 内时能撑满可用宽度 */
+.video-page-container{
+    width: 100%;
+    max-width: none; /* 解除原先的 max-width 限制，使用外层容器宽度 */
+    gap: 40px;
+    box-sizing: border-box;
+}
+
+/* 小屏时减少外层容器内边距 */
+@media (max-width: 480px){
+    .page-container{
+        padding: 16px;
+    }
+}
+
+/* 全局背景：使用 static/images/background.png 作为网页背景（覆盖全视口） */
+body {
+    min-height: 100vh;
+    margin: 0;
+    position: relative;
+    background-color: #000; /* 后备色，图片加载失败时显示 */
+
+    /* 新增：使用 flex 将 .page-container 精确居中（水平 + 垂直） */
+    display: flex;
+    align-items: center;    /* 垂直居中 */
+    justify-content: center;/* 水平居中 */
+    padding: 40px 0;        /* 给小屏幕顶部/底部留空隙 */
+    box-sizing: border-box;
+}
+
+/* 将背景图片放在伪元素以便于层叠控制，不拦截交互 */
+body::before{
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: url('/static/images/background.jpeg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    opacity: 1;
+    pointer-events: none;
+    z-index: -2; /* 置于页面最底层，page-container 的伪元素和内容在其上方 */
+}
+
+/* 小屏时取消右侧外边距以避免横向滚动 */
+@media (max-width: 768px){
+    .form-section{
+        margin-right: 0;
+    }
+}
+
+/* 小屏时让表单占满宽度，避免横向滚动 */
+@media (max-width: 768px){
+    .form-section{
+        flex: 1 1 100%;
+        max-width: 100%;
+        margin-right: 0;
+        left: 0; /* 小屏时取消左移 */
+    }
+    .video-display{
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+}
+
+/* 全局正文字体：除了 h2 之外都使用 fonts 中的 正文字体（@font-face 定义名为 CustomUI） */
+body, p, a, span, li, label,
+input, select, textarea, button {
+    font-family: 'CustomUI', "Microsoft YaHei", "Segoe UI", Arial, sans-serif;
+}
+
+/* 保证表单占位/提示等也使用正文字体 */
+input::placeholder,
+textarea::placeholder {
+    font-family: 'CustomUI', "Microsoft YaHei", "Segoe UI", Arial, sans-serif;
+}
+
+/* 排除 h2：标题保持原来或使用系统标题字体（不应用正文字体）*/
 h2 {
-    text-align: center;
-    font-size: 26px;
-    font-weight: 600;
-    margin-top: 30px;
-    margin-bottom: 20px;
-    color: #333;
+    font-family: "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+}
+
+/* 左上角返回按钮样式（替代原来内联样式） */
+.back-btn{
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 999;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: none;
+    background: rgba(0,0,0,0.65);
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.35);
+    font-size: 1.25rem; /* 字体放大 */
+    line-height: 1;
+    font-family: 'CustomUI', "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* 悬停与按下效果 */
+.back-btn:hover{
+    background: rgba(0,0,0,0.8);
+    transform: translateY(-1px);
+}
+.back-btn:active{
+    transform: translateY(0);
+}
+
+/* 小屏时适当缩小按钮与位置 */
+@media (max-width: 480px){
+    .back-btn{
+        top: 10px;
+        left: 10px;
+        padding: 8px 10px;
+        font-size: 1rem;
+    }
 }

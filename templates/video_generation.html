@@ -3,21 +3,31 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>视频生成界面</title>
+    <title>视频生成</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/elaboration.css') }}">
 </head>
 
 <body class="subpage-bg">
-    <h2>视频生成界面</h2>
-    <div class="video-page-container">
-        <!-- 左边视频显示 -->
-        <div class="video-display">
-            <video id="outputVideo" controls width="420">
-                <source src="{{ url_for('static', filename='videos/sample.mp4') }}" type="video/mp4">
-            </video>
-        </div>
 
-        <!-- 右边输入表单 -->
+    <button onclick="window.location.href='/'" aria-label="返回首页" title="返回首页" class="back-btn">
+        ← 返回
+    </button>
+
+    <button class="vg-help-button" id="vg_openHelpBtn" aria-haspopup="dialog" aria-controls="vg_helpModal">参数说明</button>
+
+    <div class="page-container">
+        <h2>视频生成</h2>
+
+        <div class="video-page-container">
+            <!-- 左侧：预览/生成视频区域 -->
+            <div class="video-display">
+                <video id="previewVideo" controls width="420">
+                    <source src="{{ url_for('static', filename='videos/sample.mp4') }}" type="video/mp4">
+                </video>
+            </div>
+
+            <!-- 右边输入表单 -->
         <div class="form-section">
             <form id="videoForm">
                 <div class="form-group">
@@ -55,35 +65,33 @@
                 <button type="submit" class="generate-btn">生成视频</button>
             </form>
         </div>
+        </div>
     </div>
 
-    <script>
-        document.getElementById('videoForm').addEventListener('submit', function (e) {
-            e.preventDefault();
+    <!-- modal：从静态文本加载内容（删除内联文字），并提供播放教程视频按钮 -->
+    <div class="vg-modal-backdrop" id="vg_helpModal" role="dialog" aria-modal="true" aria-labelledby="vg_helpTitle" tabindex="-1" hidden>
+        <div class="vg-modal-content" role="document">
+            <div class="vg-modal-header">
+                <h2 class="vg-modal-title" id="vg_helpTitle">参数说明</h2>
+                <button class="vg-modal-close" id="vg_closeHelpBtn" aria-label="关闭">✕</button>
+            </div>
 
-            const formData = new FormData(this);
+            <!-- pre 使用 data-src 指向静态文本文件 -->
+            <pre id="vg_helpBody" class="vg-modal-body" tabindex="0" data-src="{{ url_for('static', filename='text/video_generation.txt') }}"></pre>
 
-            fetch('/video_generation', {
-                method: 'POST',
-                body: formData
-            })
-                .then(res => res.json())
-                .then(data => {
-                    console.log("后端返回:", data);
-                    if (data.status === 'success') {
-                        const videoEl = document.getElementById('outputVideo');
-                        const newSrc = data.video_path + '?t=' + new Date().getTime();
-                        videoEl.src = newSrc;
-                        videoEl.load();
-                        videoEl.play().catch(err => console.warn('自动播放被阻止:', err));
-                    } else {
-                        alert('视频生成失败！');
-                    }
-                })
-                .catch(err => console.error('错误:', err));
-        });
+            <!-- 右下角播放按钮（新标签打开视频） -->
+            <div class="vg-modal-actions" aria-hidden="false">
+                <button class="vg-btn vg-btn-primary" id="vg_playTutorialBtn" type="button"
+                        data-video="{{ url_for('static', filename='videos/tutorial.mp4') }}">
+                    播放教程视频
+                </button>
+            </div>
+        </div>
+    </div>
 
-    </script>
+    <script src="{{ url_for('static', filename='js/video_generation.js') }}"></script>
+    <!-- 本页专用脚本（不要引用 index.js） -->
+    <script src="{{ url_for('static', filename='js/elaboration.js') }}"></script>
 
 </body>
 

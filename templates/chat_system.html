@@ -5,374 +5,107 @@
     <meta charset="UTF-8">
     <title>实时对话系统</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <style>
-        body {
-            font-family: 'Microsoft YaHei', sans-serif;
-            background-color: #f5f5f5;
-            margin: 0;
-            padding: 20px;
-            color: #333;
-        }
-
-        h2 {
-            text-align: center;
-            color: #2c3e50;
-            margin-bottom: 30px;
-        }
-
-        .video-page-container {
-            display: flex;
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-
-        .video-display {
-            flex: 1;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .video-display video {
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            margin-bottom: 20px;
-        }
-
-        .form-section {
-            flex: 1;
-            padding: 20px;
-            background: #f9f9f9;
-            border-left: 1px solid #eee;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: #555;
-        }
-
-        select, input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-
-        .generate-btn {
-            width: 100%;
-            padding: 12px;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .generate-btn:hover {
-            background-color: #2980b9;
-        }
-
-        .voice-recorder {
-            margin-top: 20px;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-
-        .recorder-title {
-            font-size: 18px;
-            margin-bottom: 15px;
-            color: #2c3e50;
-        }
-
-        .record-btn {
-            padding: 12px 24px;
-            background-color: #e74c3c;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin: 0 auto 15px;
-        }
-
-        .record-btn:hover {
-            background-color: #c0392b;
-            transform: scale(1.05);
-        }
-
-        .record-btn.recording {
-            background-color: #2ecc71;
-            animation: pulse 1.5s infinite;
-        }
-
-        .record-btn.recording:hover {
-            background-color: #27ae60;
-        }
-
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
-            }
-            70% {
-                box-shadow: 0 0 0 10px rgba(46, 204, 113, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
-            }
-        }
-
-        .timer {
-            font-size: 24px;
-            font-weight: bold;
-            color: #2c3e50;
-            margin: 15px 0;
-        }
-
-        .recording-indicator {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin: 10px 0;
-        }
-
-        .recording-dot {
-            width: 12px;
-            height: 12px;
-            background-color: #e74c3c;
-            border-radius: 50%;
-            animation: blink 1.5s infinite;
-        }
-
-        @keyframes blink {
-            0%, 50% {
-                opacity: 1;
-            }
-            51%, 100% {
-                opacity: 0;
-            }
-        }
-
-        .status-message {
-            margin-top: 10px;
-            font-size: 14px;
-            color: #7f8c8d;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_system.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/elaboration.css') }}">
 </head>
 
 <body class="subpage-bg">
-    <h2>实时对话系统</h2>
-    <div class="video-page-container">
-        <div class="video-display">
-            <!-- 语音录制器 -->
-            <div class="voice-recorder">
-                <button id="recordButton" class="record-btn">
-                    <span>●</span> 开始录音
-                </button>
-                <div class="timer" id="timer">00:00</div>
-                <div class="recording-indicator" id="recordingIndicator" style="display: none;">
-                    <div class="recording-dot"></div>
-                    <span>正在录音...</span>
+
+    <button onclick="window.location.href='/'" aria-label="返回首页" title="返回首页" class="back-btn">
+        ← 返回
+    </button>
+
+    <button class="vg-help-button" id="vg_openHelpBtn" aria-haspopup="dialog" aria-controls="vg_helpModal">参数说明</button>
+    
+    <div class="page-container">
+        <h2>实时对话系统</h2>
+        <div class="video-page-container">
+            <div class="video-display">
+                <!-- 语音录制器 -->
+                <div class="voice-recorder">
+                    <button id="recordButton" class="record-btn">
+                        <span>●</span> 开始录音
+                    </button>
+                    <div class="timer" id="timer">00:00</div>
+                    <div class="recording-indicator" id="recordingIndicator" style="display: none;">
+                        <div class="recording-dot"></div>
+                        <span>正在录音...</span>
+                    </div>
+                    <div class="status-message" id="statusMessage">准备录音</div>
                 </div>
-                <div class="status-message" id="statusMessage">准备录音</div>
+                <!-- 左侧视频显示 -->
+                <video id="chatVideo" controls width="420">
+                    <!--<source src="{{ url_for('static', filename='videos/sample.mp4') }}" type="video/mp4">-->
+                    <source src="{{ url_for('static', filename='audios/cloned_output.wav') }}" type="audio/wav">
+                </video>
             </div>
-            <!-- 左侧视频显示 -->
-            <video id="chatVideo" controls width="420">
-                <source src="{{ url_for('static', filename='videos/sample.mp4') }}" type="video/mp4">
-            </video>
-        </div>
 
-        <!-- 右侧参数区 -->
-        <div class="form-section">
-            <form id="chatForm">
-                <div class="form-group">
-                    <label>模型名称</label>
-                    <select name="model_name">
-                        <option value="model1">Model 1</option>
-                        <option value="model2">Model 2</option>
-                        <option value="SyncTalk">SyncTalk</option>
-                    </select>
-                </div>
+            <!-- 右侧参数区 -->
+            <div class="form-section">
+                <form id="chatForm">
+                    <div class="form-group">
+                        <label>模型选择</label>
+                        <select name="model_name">
+                            <option value="model1">Model 1</option>
+                            <option value="model2">Model 2</option>
+                            <option value="SyncTalk">SyncTalk</option>
+                        </select>
+                    </div>
 
-                <div class="form-group">
-                    <label>模型目录地址</label>
-                    <input type="text" name="model_param" placeholder="请输入模型目录路径">
-                </div>
+                    <div class="form-group">
+                        <label>模型目录地址</label>
+                        <input type="text" name="model_param" placeholder="请输入模型目录路径">
+                    </div>
 
-                <div class="form-group">
-                    <label>语音克隆模型名称</label>
-                    <select name="voice_clone">
-                        <option value="cloneA">Voice Clone A</option>
-                        <option value="cloneB">Voice Clone B</option>
-                    </select>
-                </div>
+                    <div class="form-group">
+                        <label>语音克隆模型名称</label>
+                        <select name="voice_clone">
+                            <option value="cloneA">Voice Clone A</option>
+                            <option value="cloneB">Voice Clone B</option>
+                        </select>
+                    </div>
 
-                <div class="form-group">
-                    <label>对话API选择</label>
-                    <select name="api_choice">
-                        <option value="openai">OpenAI API</option>
-                        <option value="azure">Azure Speech API</option>
-                    </select>
-                </div>
+                    <div class="form-group">
+                        <label>对话API选择</label>
+                        <select name="api_choice">
+                            <option value="openai">OpenAI API</option>
+                            <option value="azure">Azure Speech API</option>
+                        </select>
+                    </div>
 
-                <button type="submit" class="generate-btn">🎤 开始对话</button>
-            </form>
+                    <button type="submit" class="generate-btn">🎤 开始对话</button>
+                </form>
+            </div>
         </div>
     </div>
 
-    <script>
-        // 语音录制功能
-        let mediaRecorder;
-        let audioChunks = [];
-        let isRecording = false;
-        let startTime;
-        let timerInterval;
-        
-        const recordButton = document.getElementById('recordButton');
-        const timerDisplay = document.getElementById('timer');
-        const recordingIndicator = document.getElementById('recordingIndicator');
-        const statusMessage = document.getElementById('statusMessage');
-        
-        // 格式化时间显示
-        function formatTime(seconds) {
-            const mins = Math.floor(seconds / 60);
-            const secs = seconds % 60;
-            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        }
-        
-        // 更新计时器
-        function updateTimer() {
-            const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
-            timerDisplay.textContent = formatTime(elapsedSeconds);
-        }
-        
-        // 开始录音
-        async function startRecording() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                mediaRecorder = new MediaRecorder(stream);
-                audioChunks = [];
-                
-                mediaRecorder.ondataavailable = event => {
-                    audioChunks.push(event.data);
-                };
-                
-                mediaRecorder.onstop = () => {
-                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-                    
-                    // 创建FormData并发送到服务器
-                    const formData = new FormData();
-                    formData.append('audio', audioBlob, 'input.wav');
-                    
-                    fetch('/save_audio', {
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status === 'success') {
-                            statusMessage.textContent = '录音已结束';
-                        } else {
-                            statusMessage.textContent = '保存录音失败';
-                        }
-                    })
-                    .catch(error => {
-                        console.error('保存录音错误:', error);
-                        statusMessage.textContent = '保存录音时出错';
-                    });
-                    
-                    // 停止所有音频轨道
-                    stream.getTracks().forEach(track => track.stop());
-                };
-                
-                mediaRecorder.start();
-                isRecording = true;
-                recordButton.innerHTML = '<span>■</span> 停止录音';
-                recordButton.classList.add('recording');
-                recordingIndicator.style.display = 'flex';
-                statusMessage.textContent = '正在录音...';
-                
-                // 启动计时器
-                startTime = Date.now();
-                timerInterval = setInterval(updateTimer, 1000);
-                
-            } catch (error) {
-                console.error('获取麦克风权限失败:', error);
-                statusMessage.textContent = '无法访问麦克风，请检查权限设置';
-            }
-        }
-        
-        // 停止录音
-        function stopRecording() {
-            if (mediaRecorder && isRecording) {
-                mediaRecorder.stop();
-                isRecording = false;
-                recordButton.innerHTML = '<span>●</span> 开始录音';
-                recordButton.classList.remove('recording');
-                recordingIndicator.style.display = 'none';
-                statusMessage.textContent = '录音完成，正在保存...';
-                
-                // 停止计时器
-                clearInterval(timerInterval);
-            }
-        }
-        
-        // 录音按钮点击事件
-        recordButton.addEventListener('click', () => {
-            if (!isRecording) {
-                startRecording();
-            } else {
-                stopRecording();
-            }
-        });
-        
-        document.getElementById('chatForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const formData = new FormData(this);
+    <!-- 共用 modal（内容从 static/text/index.txt 加载） -->
+    <div class="vg-modal-backdrop" id="vg_helpModal" role="dialog" aria-modal="true" aria-labelledby="vg_helpTitle" tabindex="-1" hidden>
+        <div class="vg-modal-content" role="document">
+            <div class="vg-modal-header">
+                <h2 class="vg-modal-title" id="vg_helpTitle">参数说明</h2>
+                <button class="vg-modal-close" id="vg_closeHelpBtn" aria-label="关闭">✕</button>
+            </div>
 
-            fetch('/chat_system', {
-                method: 'POST',
-                body: formData
-            })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        const videoEl = document.getElementById('chatVideo');
-                        const newSrc = data.video_path + '?t=' + new Date().getTime();
-                        videoEl.src = newSrc;
-                        videoEl.load();
-                        videoEl.play();
-                        alert('对话完成！');
-                    }
-                })
-                .catch(err => console.error('错误:', err));
-        });
-    </script>
+            <pre id="vg_helpBody" class="vg-modal-body" tabindex="0" data-src="{{ url_for('static', filename='text/chat_system.txt') }}"></pre>
+
+            <div class="vg-modal-actions" aria-hidden="false">
+                <button class="vg-btn vg-btn-primary" id="vg_playTutorialBtn" type="button"
+                        data-video="{{ url_for('static', filename='videos/tutorial.mp4') }}">
+                    播放教程视频
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/chat_system.js') }}"></script>
+    <!-- 共用帮助脚本 -->
+    <script src="{{ url_for('static', filename='js/elaboration.js') }}"></script>
 </body>
 
 </html>
+
+<!--
+Example audio file URL:
+http://127.0.0.1:5000/static/audios/input.wav
+-->
