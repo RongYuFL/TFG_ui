@@ -6,6 +6,7 @@
     <title>实时对话系统</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_system.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/elaboration.css') }}">
 </head>
 
 <body class="subpage-bg">
@@ -13,6 +14,8 @@
     <button onclick="window.location.href='/'" aria-label="返回首页" title="返回首页" class="back-btn">
         ← 返回
     </button>
+
+    <button class="vg-help-button" id="vg_openHelpBtn" aria-haspopup="dialog" aria-controls="vg_helpModal">参数说明</button>
     
     <div class="page-container">
         <h2>实时对话系统</h2>
@@ -41,7 +44,7 @@
             <div class="form-section">
                 <form id="chatForm">
                     <div class="form-group">
-                        <label>模型名称</label>
+                        <label>模型选择</label>
                         <select name="model_name">
                             <option value="model1">Model 1</option>
                             <option value="model2">Model 2</option>
@@ -76,7 +79,28 @@
         </div>
     </div>
 
+    <!-- 共用 modal（内容从 static/text/index.txt 加载） -->
+    <div class="vg-modal-backdrop" id="vg_helpModal" role="dialog" aria-modal="true" aria-labelledby="vg_helpTitle" tabindex="-1" hidden>
+        <div class="vg-modal-content" role="document">
+            <div class="vg-modal-header">
+                <h2 class="vg-modal-title" id="vg_helpTitle">参数说明</h2>
+                <button class="vg-modal-close" id="vg_closeHelpBtn" aria-label="关闭">✕</button>
+            </div>
+
+            <pre id="vg_helpBody" class="vg-modal-body" tabindex="0" data-src="{{ url_for('static', filename='text/chat_system.txt') }}"></pre>
+
+            <div class="vg-modal-actions" aria-hidden="false">
+                <button class="vg-btn vg-btn-primary" id="vg_playTutorialBtn" type="button"
+                        data-video="{{ url_for('static', filename='videos/tutorial.mp4') }}">
+                    播放教程视频
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script src="{{ url_for('static', filename='js/chat_system.js') }}"></script>
+    <!-- 共用帮助脚本 -->
+    <script src="{{ url_for('static', filename='js/elaboration.js') }}"></script>
 </body>
 
 </html>

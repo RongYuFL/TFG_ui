@@ -193,3 +193,224 @@ h1{
         max-width: 480px; /* 如需更窄可调整 */
     }
 }
+
+/* 使用教程按钮与弹窗样式 */
+.help-button {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 999;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: none;
+    background: rgba(0,0,0,0.65);
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.35);
+    font-size: 2rem;
+    line-height: 1;
+    font-family: 'CustomUI', "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.help-button:hover{
+    background: rgba(0,0,0,0.8);
+    transform: translateY(-1px);
+}
+.help-button:active{
+    transform: translateY(0);
+}
+
+/* 小屏时适当缩小按钮与位置 */
+@media (max-width: 480px){
+    .help-button{
+        top: 10px;
+        right: 10px;
+        padding: 8px 10px;
+        font-size: 1rem;
+    }
+}
+
+/* ===== 美化的 modal 界面 ===== */
+.modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(6,10,20,0.55); /* 更深的遮罩色 */
+    z-index: 1500;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    transition: opacity 220ms ease, backdrop-filter 220ms ease;
+    opacity: 0;
+    pointer-events: none;
+    backdrop-filter: blur(3px) saturate(1.05);
+}
+
+.modal-backdrop.show {
+    display: flex;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* 中心卡片 */
+.modal-content {
+    background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+    color: #0b1220;
+    width: min(860px, calc(100% - 48px));
+    max-width: 860px;
+    max-height: 82vh;
+    overflow: hidden;
+    border-radius: 14px;
+    box-shadow: 0 18px 60px rgba(3,10,30,0.55), 0 6px 18px rgba(0,0,0,0.18);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(8px) scale(0.985);
+    transition: transform 220ms cubic-bezier(.2,.9,.2,1), opacity 220ms ease;
+    opacity: 0;
+}
+
+/* 出场动画，配合 .modal-backdrop.show 使用 JS 添加 class.show 到 modal-content */
+.modal-backdrop.show .modal-content{
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+/* 标题栏（带渐变）*/
+.modal-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 18px;
+    background: linear-gradient(90deg, rgba(0,198,255,0.12), rgba(0,114,255,0.08));
+    border-bottom: 1px solid rgba(6,10,20,0.04);
+    backdrop-filter: blur(4px);
+}
+
+/* ===== 将 modal 中的文字字体放大一倍 ===== */
+/* 标题 */
+.modal-title {
+    margin: 0;
+    /* 原 1.05rem -> 放大一倍 */
+    font-size: 2.1rem;
+    color: #00263b;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+}
+
+/* 主体文本 */
+.modal-body {
+    padding: 18px 20px;
+    overflow: auto;
+    /* 原 0.95rem -> 放大一倍 */
+    font-size: 1.9rem;
+    /* 适当放大行高以保持可读性 */
+    line-height: 1.6;
+    color: #0e2433;
+    background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(250,252,255,0.99));
+    -webkit-overflow-scrolling: touch;
+
+    /* 保留换行 */
+    white-space: pre-wrap !important;
+    word-break: break-word;
+    display: block;
+    margin: 0;
+    font-family: 'CustomUI', "Microsoft YaHei", Arial, sans-serif;
+}
+
+/* 关闭按钮：圆形、高对比、有 hover 效果 */
+.modal-close {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    padding: 0;
+    border: none;
+    background: rgba(255,255,255,0.98);
+    color: #0c1724;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 18px rgba(2,12,30,0.12);
+    transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
+    /* 原 16px -> 放大一倍 */
+    font-size: 32px;
+    line-height: 1;
+}
+
+/* 将 modal 底部操作栏移动到卡片右下角，并美化按钮 */
+.modal-content {
+    /* 确保为绝对定位的底部按钮留出空间，避免遮挡内容 */
+    padding-bottom: 84px; /* 根据按钮高度微调 */
+}
+
+/* 右下角固定在 modal 卡片内 */
+.modal-actions{
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: flex-end;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+}
+
+/* 美化主按钮：渐变、圆角、阴影与交互效果 */
+.modal-actions .btn.primary{
+    padding: 12px 18px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #fff;
+    background: linear-gradient(90deg,#00c6ff 0%,#0072ff 100%);
+    box-shadow: 0 10px 30px rgba(0,114,255,0.18);
+    transition: transform 140ms ease, box-shadow 140ms ease, opacity 140ms ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* 悬停与按下状态 */
+.modal-actions .btn.primary:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 14px 36px rgba(0,114,255,0.22);
+}
+.modal-actions .btn.primary:active{
+    transform: translateY(0);
+    opacity: 0.95;
+}
+
+/* 小屏幕（手机）时将按钮横向撑满底部，避免遮挡阅读 */
+@media (max-width: 520px){
+    .modal-content { padding-bottom: 96px; }
+    .modal-actions{
+        left: 18px;
+        right: 18px;
+        bottom: 14px;
+        justify-content: center;
+    }
+    .modal-actions .btn.primary{
+        width: 100%;
+        justify-content: center;
+        font-size: 1rem;
+        padding: 12px 14px;
+    }
+}
+/* ===== end modal 美化 ===== */
+
+/* 去掉 pre 的默认外边距，消除标题与内容之间空行 */
+pre.modal-body {
+    margin: 0;
+}
+
+/* 如果还需要针对所有 pre 生效，可取消注释下面一行：
+pre { margin: 0; }
+*/

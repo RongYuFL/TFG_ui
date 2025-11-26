@@ -1,0 +1,106 @@
+.vg-help-button{
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 999;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: none;
+    background: rgba(0,0,0,0.65);
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.35);
+    font-size: 2rem;
+    line-height: 1;
+    font-family: 'CustomUI', "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.vg-help-button:hover{ transform: translateY(-2px); }
+
+/* 遮罩与居中容器 */
+.vg-modal-backdrop{
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(6,10,20,0.55);
+    z-index: 1400;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+.vg-modal-backdrop[hidden] { display: none; }
+.vg-modal-backdrop.show { display: flex; }
+
+/* 卡片 */
+.vg-modal-content{
+    width: min(860px, calc(100% - 48px));
+    max-height: 86vh;
+    background: linear-gradient(180deg,#fff,#fbfdff);
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(2,12,30,0.45);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding-bottom: 84px; /* 为右下角按钮预留空间 */
+    overflow: hidden;
+}
+
+/* 标题栏 */
+.vg-modal-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 18px;
+    border-bottom:1px solid rgba(6,10,20,0.04);
+}
+.vg-modal-title{ font-size:1.6rem; margin:0; color:#00263b; }
+
+/* 关闭按钮 */
+.vg-modal-close{
+    width:40px;height:40px;border-radius:10px;border:none;
+    background:#fff;font-size:18px;cursor:pointer;
+    box-shadow:0 6px 18px rgba(2,12,30,0.12);
+}
+
+/* 主体（保留换行） */
+.vg-modal-body{
+    padding:18px 20px;
+    overflow:auto;
+    font-size:1.6625rem; /* 0.95rem * 1.75 基于之前要求 */
+    line-height:1.6;
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin:0;
+    font-family: 'CustomUI', "Microsoft YaHei", Arial, sans-serif;
+    background: transparent;
+}
+
+/* 右下角按钮 */
+.vg-modal-actions{
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
+    display:flex;
+    gap:12px;
+    padding:0;
+    margin:0;
+}
+.vg-btn{
+    border: none; cursor: pointer; border-radius: 12px;
+    padding:10px 16px; font-weight:700; font-size:1rem;
+}
+.vg-btn-primary{
+    background: linear-gradient(90deg,#00c6ff,#0072ff); color:#fff;
+    box-shadow: 0 10px 28px rgba(0,114,255,0.18);
+    display:inline-flex; align-items:center; gap:8px;
+}
+.vg-btn-primary:hover{ transform: translateY(-3px); }
+
+/* small screens */
+@media (max-width:520px){
+    .vg-modal-body{ font-size:1.05rem; }
+    .vg-modal-content{ padding-bottom: 96px; }
+    .vg-modal-actions{ left:18px; right:18px; bottom:14px; justify-content:center; }
+    .vg-btn-primary{ width:100%; justify-content:center; }
+}

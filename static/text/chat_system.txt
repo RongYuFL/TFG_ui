@@ -1,0 +1,17 @@
+1. 模型选择
+   - Model A ：
+   - Modal B ：
+   - SyncTalk：
+
+2. 模型目录地址
+   - 例如：
+
+3. 语音克隆模型名称
+   - Voice Clone A：
+   - Voice Clone B：
+
+4. 对话API选择
+   - OpenAI API：
+   - Azure Speech API：
+
+5. 更多细节请参照 README.md 中的完整说明和视频教程。
